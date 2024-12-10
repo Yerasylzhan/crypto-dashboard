@@ -17,18 +17,19 @@ import {
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { toast } from 'react-toastify';
+import Navbar from '../components/Navbar';
 
 const fetchRates = async (
   pairId: number,
-  startDate: string,
-  endDate: string,
+  fromDate: string,
+  toDate: string,
   limit: number
 ): Promise<CryptoRate[]> => {
   const response = await api.get('/rates', {
     params: {
       pairId,
-      startDate,
-      endDate,
+      fromDate,
+      toDate,
       limit,
       sort: 'asc',
     },
@@ -37,16 +38,13 @@ const fetchRates = async (
 };
 
 const AnalyticsPage = () => {
-  // Получение списка пар
   const { data: pairs, isLoading: pairsLoading, error: pairsError } = useQuery<CryptoPair[]>('pairs', fetchPairs);
-  
-  // Состояния для выбранной пары, дат и лимита
+
   const [selectedPair, setSelectedPair] = useState<number | null>(null);
   const [startDate, setStartDate] = useState<Date | undefined>(new Date(new Date().setDate(new Date().getDate() - 7)));
   const [endDate, setEndDate] = useState<Date | undefined>(new Date());
   const [limit, setLimit] = useState<number>(100);
 
-  // Получение курсов на основе выбранных параметров
   const { data: rates, isLoading: ratesLoading, error: ratesError } = useQuery<CryptoRate[]>(
     ['rates', selectedPair, startDate, endDate, limit],
     () => {
@@ -68,7 +66,6 @@ const AnalyticsPage = () => {
     }
   );
 
-  // Обработчик изменения выбранной пары
   const handlePairChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const value = e.target.value;
     setSelectedPair(value ? Number(value) : null);
@@ -76,10 +73,10 @@ const AnalyticsPage = () => {
 
   return (
     <div className="container mx-auto p-4">
+      <Navbar/>
       <h1 className="text-2xl font-bold mb-4">Аналитика Курсов</h1>
 
       <div className="flex flex-wrap space-x-4 mb-4">
-        {/* Выбор пары */}
         <div className="mb-2">
           <label className="block mb-1">Выберите пару</label>
           <select onChange={handlePairChange} className="border p-2 rounded">
@@ -92,7 +89,6 @@ const AnalyticsPage = () => {
           </select>
         </div>
 
-        {/* Начальная дата */}
         <div className="mb-2">
           <label className="block mb-1">Начальная дата</label>
           <DatePicker
@@ -106,7 +102,6 @@ const AnalyticsPage = () => {
           />
         </div>
 
-        {/* Конечная дата */}
         <div className="mb-2">
           <label className="block mb-1">Конечная дата</label>
           <DatePicker
@@ -121,7 +116,6 @@ const AnalyticsPage = () => {
           />
         </div>
 
-        {/* Лимит */}
         <div className="mb-2">
           <label className="block mb-1">Лимит</label>
           <input
@@ -135,7 +129,6 @@ const AnalyticsPage = () => {
         </div>
       </div>
 
-      {/* Отображение данных */}
       {ratesLoading ? (
         <div>Загрузка курсов...</div>
       ) : ratesError ? (

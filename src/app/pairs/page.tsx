@@ -1,5 +1,3 @@
-// src/app/pairs/page.tsx
-
 "use client";
 
 import { useQuery, useMutation, useQueryClient } from 'react-query';
@@ -9,6 +7,7 @@ import PairList from '../components/PairList';
 import PairForm from '../components/PairForm';
 import { useState } from 'react';
 import { toast } from 'react-toastify';
+import Navbar from '../components/Navbar';
 
 const PairsPage = () => {
   const queryClient = useQueryClient();
@@ -63,6 +62,7 @@ const PairsPage = () => {
 
   return (
     <div className="container mx-auto p-4">
+      <Navbar/>
       <h1 className="text-2xl font-bold mb-4">Управление Парами</h1>
       <PairForm onSubmit={handleAddPair} />
       <PairList pairs={pairs!} onUpdate={handleUpdatePair} onDelete={handleDeletePair} />

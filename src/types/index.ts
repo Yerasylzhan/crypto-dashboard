@@ -10,5 +10,5 @@ export interface CryptoPair {
     id: number;
     pairId: number;
     rate: number;
-    timestamp: string; // Используем строку для JSON-сериализации
+    timestamp: string;
   }

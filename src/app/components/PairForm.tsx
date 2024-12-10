@@ -42,6 +42,7 @@ const PairForm: React.FC<PairFormProps> = ({ initialData, onSubmit, onCancel }) 
           <label className="block">База</label>
           <input
             {...register('baseCurrency')}
+            placeholder='Например, bitcoin'
             className="border p-2 rounded"
             type="text"
           />
@@ -51,6 +52,7 @@ const PairForm: React.FC<PairFormProps> = ({ initialData, onSubmit, onCancel }) 
           <label className="block">Котировка</label>
           <input
             {...register('quoteCurrency')}
+            placeholder='Например, usd'
             className="border p-2 rounded"
             type="text"
           />
